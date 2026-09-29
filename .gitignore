@@ -9,8 +9,8 @@ node_modules/
 *.sqlite
 *.sqlite3
 
-# Python (untuk nanti)
-__pycache__/
+# Python 
+ml-service/__pycache__/
 *.pyc
 venv/
 .venv/
@@ -30,9 +30,11 @@ Thumbs.db
 # Uploads (user files - jangan di-push)
 backend/Uploads/
 backend/public/uploads/
+backend/backFill.js
 
 # Test files
 test-*.js
 *-test.js
 *-XSS.js
 tailwindtes.tsx
+

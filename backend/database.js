@@ -94,19 +94,26 @@ const dalamDatabase = () => {
 
     // 5. Insert admin user (dengan password yang sudah di-hash)
     const bcrypt = require("bcryptjs");
-    const hashedPassword = bcrypt.hashSync("admin123", 10);
+    const adminName = process.env.ADMIN_NAME || "Admin";
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    db.run(
-      `
-      INSERT OR IGNORE INTO users (name, email, password_hash, role) 
-      VALUES ('Admin', 'adminwong@gmail.com', ?, 'admin')
-    `,
-      [hashedPassword],
-      (err) => {
-        if (err) console.log("❌ Error insert admin:", err.message);
-        else console.log("✅ Admin user siap (email: adminwong@gmail.com)");
-      },
-    );
+    if (adminEmail && adminPassword) {
+      const hashedPassword = bcrypt.hashSync(adminPassword, 10);
+      db.run(
+        `INSERT OR IGNORE INTO users (name, email, password_hash, role) 
+     VALUES (?, ?, ?, 'admin')`,
+        [adminName, adminEmail, hashedPassword],
+        (err) => {
+          if (err) console.log("❌ Error insert admin:", err.message);
+          else console.log(`✅ Admin user siap (email: ${adminEmail})`);
+        },
+      );
+    } else {
+      console.log(
+        "⚠️ ADMIN_EMAIL / ADMIN_PASSWORD belum di-set di .env — skip insert admin",
+      );
+    }
     // Di dalam fungsi dalamDatabase(), tambahkan tabel ini:
 
     db.run(
@@ -167,6 +174,25 @@ const dalamDatabase = () => {
           console.log("⚠️ Kolom reset_token_expiry mungkin sudah ada");
         } else {
           console.log("✅ Kolom reset_token_expiry ditambahkan");
+        }
+      },
+    );
+    // Tambahkan kolom sentiment ke tabel review
+    db.run(`ALTER TABLE review ADD COLUMN sentiment TEXT`, (err) => {
+      if (err && !err.message.includes("duplicate column")) {
+        console.log("⚠️ Kolom sentiment mungkin sudah ada");
+      } else {
+        console.log("✅ Kolom sentiment siap");
+      }
+    });
+
+    db.run(
+      `ALTER TABLE review ADD COLUMN sentiment_score REAL DEFAULT 0`,
+      (err) => {
+        if (err && !err.message.includes("duplicate column")) {
+          console.log("⚠️ Kolom sentiment_score mungkin sudah ada");
+        } else {
+          console.log("✅ Kolom sentiment_score siap");
         }
       },
     );

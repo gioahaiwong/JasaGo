@@ -9,6 +9,8 @@ type Review = {
   comment: string;
   created_at: string;
   client_name: string;
+  sentiment?: string;
+  sentiment_score?: number;
   service_title: string;
   service_id: number;
   order_id: number;
@@ -113,13 +115,6 @@ export default function SeeReview() {
           </div>
         )}
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow">
-            {error}
-          </div>
-        )}
-
         {/* Reviews Grid */}
         {filterReview.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-md p-12 text-center">
@@ -146,6 +141,19 @@ export default function SeeReview() {
                     <span className="font-medium text-gray-800">
                       {review.client_name}
                     </span>
+                    {review.sentiment && (
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full ${
+                          review.sentiment.includes("Positif")
+                            ? "bg-green-100 text-green-700"
+                            : review.sentiment.includes("Negatif")
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {review.sentiment}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-1 text-yellow-400">
                     {[...Array(5)].map((_, i) => (
