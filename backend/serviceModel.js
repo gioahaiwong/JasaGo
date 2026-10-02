@@ -132,6 +132,14 @@ class servis {
       },
     );
   }
+  static getTrainingData(callback) {
+    db.all(
+      `SELECT category, location, title, price 
+     FROM services 
+     WHERE is_active = 1`,
+      callback,
+    );
+  }
 
   static getRecommendations(client_id, callback) {
     const fetchRecommendations = () => {

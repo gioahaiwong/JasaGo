@@ -6,6 +6,7 @@ const auth = require("./authentication/authentication");
 
 router.get("/", serviceController.getAllService);
 router.get("/my-services", auth, serviceController.getMyServices);
+router.post("/predict-price", auth, serviceController.predictPrice);
 router.get("/recommendations", auth, serviceController.recommendationServices);
 router.get("/:id", serviceController.getServiceById);
 router.post(

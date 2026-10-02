@@ -1,4 +1,5 @@
 const TugasServis = require("./serviceModel");
+const axios = require("axios");
 const getAllService = (req, res) => {
   TugasServis.getAllService((err, service) => {
     if (err) {
@@ -136,6 +137,41 @@ const recommendationServices = (req, res) => {
   });
 };
 
+const predictPrice = (req, res) => {
+  const { category, location, title } = req.body;
+  if (!category || !location) {
+    return res
+      .status(400)
+      .json({ message: "Categoy and Location must be filled!" });
+  }
+
+  TugasServis.getTrainingData(async (err, rows) => {
+    if (err) {
+      console.error("❌ DB error:", err);
+      return res.status(500).json({ message: "Database error" });
+    }
+
+    try {
+      const mlResponse = await axios.post(
+        "http://localhost:5000/predict-price",
+        {
+          category,
+          location,
+          title: title || "",
+          training_data: rows,
+        },
+        { timeout: 5000 },
+      );
+
+      res.json(mlResponse.data);
+    } catch (mlErr) {
+      console.error("Error in training!", mlErr.message);
+      return res
+        .status(500)
+        .json({ message: "Prediction service unavailable" });
+    }
+  });
+};
 module.exports = {
   getAllService,
   createService,
@@ -145,4 +181,5 @@ module.exports = {
   getMyServices,
   recommendationServices,
   searchServices,
+  predictPrice,
 };
