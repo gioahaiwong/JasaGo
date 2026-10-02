@@ -138,4 +138,8 @@ def predict_harga(body:predictHarga):
 def root():
     return("ML Service is Running !")
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
     
