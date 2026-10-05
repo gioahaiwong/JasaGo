@@ -39,7 +39,7 @@ class Review {
     let sentiment_score = 0;
     try {
       const mlResponse = await axios.post(
-        "http://localhost:5000/analyze-statement",
+        `${process.env.ML_SERVICE_URL}/analyze-statement`,
         { text: comment },
         { timeout: 3000 },
       );

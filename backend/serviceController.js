@@ -153,7 +153,7 @@ const predictPrice = (req, res) => {
 
     try {
       const mlResponse = await axios.post(
-        "http://localhost:5000/predict-price",
+        `${process.env.ML_SERVICE_URL}/predict-price`,
         {
           category,
           location,
