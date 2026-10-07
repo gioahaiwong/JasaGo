@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 
 const cors = require("cors");
@@ -5,12 +6,21 @@ const cookieParser = require("cookie-parser");
 const { db, dalamDatabase } = require("./database");
 dalamDatabase(); // Panggil fungsi untuk membuat tabel jika belum ada
 
-require("dotenv").config();
 const app = express();
+app.set("trust proxy", 1);
 
+const kasihOrigin = [
+  process.env.FRONTEND_URL || "http://localhost:5173",
+].filter(Boolean);
 app.use(
   cors({
-    origin: "http://localhost:5173", // Ganti dengan URL frontend Anda
+    origin: function (origin, callback) {
+      if (!origin || kasihOrigin.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
@@ -43,7 +53,7 @@ app.use((err, req, res, next) => {
 
 require("./cleanUpJob");
 const PORT = process.env.PORT || 2500;
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on sigma port ${PORT}`);
   console.log(`🏠 Home: http://localhost:${PORT}/`);
 });

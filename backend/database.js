@@ -1,7 +1,9 @@
 const sqlite = require("sqlite3").verbose();
 const path = require("path");
 
-const dbPath = path.join(__dirname, "jasago.db");
+const dbPath = process.env.DATABASE_URL
+  ? process.env.DATABASE_URL
+  : path.join(__dirname, "jasago.db");
 
 // Koneksi ke databasenya langsung
 const db = new sqlite.Database(dbPath);
@@ -199,5 +201,4 @@ const dalamDatabase = () => {
   });
 };
 
-dalamDatabase();
 module.exports = { db, dalamDatabase };

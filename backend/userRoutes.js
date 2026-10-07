@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("./userController");
-const auth = require("../backend/authentication/authentication");
-const roleMiddleware = require("../backend/authentication/roleMiddleware");
+const auth = require("./authentication/authentication");
+const roleMiddleware = require("./authentication/roleMiddleware");
 router.post("/register", userController.createUser);
 router.post("/login", userController.loginUser);
 router.post("/logout", userController.logoutUser);

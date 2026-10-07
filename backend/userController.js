@@ -67,7 +67,7 @@ const loginUser = (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, // Tidak bisa diakses JavaScript (AMAN dari XSS)
       secure: process.env.NODE_ENV === "production", // true jika pakai HTTPS
-      sameSite: "lax", // Perlindungan CSRF
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Perlindungan CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 hari
     });
     res.status(200).json({
@@ -86,7 +86,7 @@ const logoutUser = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", //ini untuk mengatasi masalah CSRF dan memastikan cookie hanya dikirim ke domain yang sama
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
