@@ -15,11 +15,21 @@ const kasihOrigin = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || kasihOrigin.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // Izinkan request tanpa origin (mobile apps, Postman, dll)
+      if (!origin) return callback(null, true);
+
+      // Izinkan origin yang ada di daftar
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      // Izinkan semua subdomain *.vercel.app (untuk preview deployments)
+      if (/\.vercel\.app$/.test(origin)) {
+        return callback(null, true);
+      }
+
+      // Tolak selain itu
+      callback(new Error(`CORS blocked for origin: ${origin}`));
     },
     credentials: true,
   }),
