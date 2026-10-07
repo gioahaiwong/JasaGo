@@ -19,7 +19,7 @@ app.use(
       if (!origin) return callback(null, true);
 
       // Izinkan origin yang ada di daftar
-      if (allowedOrigins.includes(origin)) {
+      if (kasihOrigin.includes(origin)) {
         return callback(null, true);
       }
 
