@@ -160,7 +160,7 @@ const predictPrice = (req, res) => {
           title: title || "",
           training_data: rows,
         },
-        { timeout: 5000 },
+        { timeout: 60000 },
       );
 
       res.json(mlResponse.data);
