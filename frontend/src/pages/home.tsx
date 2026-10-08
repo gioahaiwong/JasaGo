@@ -216,6 +216,12 @@ export default function Home() {
             >
               Profile
             </Link>
+            <Link
+              to="/about-us"
+              className="text-white hover:text-purple-600 font-medium transition"
+            >
+              About Us
+            </Link>
             <button
               onClick={handleLogOut}
               className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition"

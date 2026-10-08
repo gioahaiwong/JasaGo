@@ -30,6 +30,7 @@ import MyServices from "./pages/MyServices";
 import IncomingOrders from "./pages/incomingOrder";
 import SeeReview from "./pages/seeReview";
 import PasswordReset from "./pages/PasswordReset";
+import AboutUs from "./pages/AboutUs";
 // Welcome Screen Component
 function WelcomeScreen() {
   const navigate = useNavigate();
@@ -284,6 +285,7 @@ const router = createBrowserRouter([
   { path: "/incoming-orders", element: <IncomingOrders /> },
   { path: "/providers-review", element: <SeeReview /> },
   { path: "/password-reset/:token?", element: <PasswordReset /> },
+  { path: "/about-us", element: <AboutUs /> },
 ]);
 
 // Main App Component
