@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import api from "../axiosConfig";
+import CustomerServiceToast from "./customerService";
 import {
   Wrench,
   Zap,
@@ -15,6 +16,7 @@ import {
   Clock,
   User,
   LogOut,
+  Headphones,
 } from "lucide-react";
 
 type User = {
@@ -82,8 +84,10 @@ export default function Home() {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [loadingRecs, setLoadingRecs] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [csOpen, setCsOpen] = useState(false);
 
   const firstName = user?.name?.split(" ")[0] || "User";
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -97,6 +101,7 @@ export default function Home() {
       window.location.replace("/login");
     }
   }, []);
+
   useEffect(() => {
     if (user?.role === "client") {
       const fetchRecommendations = async () => {
@@ -179,7 +184,7 @@ export default function Home() {
                   Services
                 </Link>
                 <Link
-                  to="/my-orders" // <-- TAMBAHKAN INI
+                  to="/my-orders"
                   className="text-white hover:text-purple-600 font-medium transition"
                 >
                   My Orders
@@ -223,6 +228,13 @@ export default function Home() {
               About Us
             </Link>
             <button
+              onClick={() => setCsOpen(true)}
+              className="flex items-center gap-2 text-white hover:text-purple-600 font-medium transition"
+            >
+              <Headphones className="w-4 h-4" />
+              Customer Service
+            </button>
+            <button
               onClick={handleLogOut}
               className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition"
             >
@@ -233,6 +245,13 @@ export default function Home() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => setCsOpen(true)}
+              className="bg-white/10 text-white p-2 rounded-lg"
+              aria-label="Customer Service"
+            >
+              <Headphones className="w-5 h-5" />
+            </button>
             <button
               onClick={handleLogOut}
               className="bg-red-50 text-red-600 p-2 rounded-lg"
@@ -376,6 +395,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* ===== AI Recommendations Section (Hanya untuk Client) ===== */}
       {user?.role === "client" && (
         <section className="py-12 bg-gradient-to-r from-indigo-50 to-purple-50">
@@ -489,6 +509,9 @@ export default function Home() {
           <p className="text-sm mt-2">Your trusted service marketplace</p>
         </div>
       </footer>
+
+      {/* ===== Customer Service Toast ===== */}
+      <CustomerServiceToast isOpen={csOpen} onClose={() => setCsOpen(false)} />
     </div>
   );
 }
