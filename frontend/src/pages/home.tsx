@@ -238,6 +238,7 @@ export default function Home() {
               About Us
             </Link>
             <button
+              ref={csButtonRef}
               onClick={() => setCsOpen(true)}
               className="flex items-center gap-2 text-white hover:text-purple-600 font-medium transition"
             >
@@ -256,7 +257,6 @@ export default function Home() {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
             <button
-              ref={csButtonRef}
               onClick={() => setCsOpen(true)}
               className="bg-white/10 text-white p-2 rounded-lg"
               aria-label="Customer Service"
