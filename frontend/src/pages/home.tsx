@@ -352,49 +352,51 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-              Popular Categories
-            </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">
-              Choose from our most requested services
-            </p>
-          </motion.div>
+      {user?.role !== "provider" && (
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+                Popular Categories
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                Choose from our most requested services
+              </p>
+            </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat, index) => (
-              <motion.div
-                key={cat.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.05, duration: 0.4 }}
-                whileHover={{ y: -5 }}
-              >
-                <Link
-                  to={`/services?category=${cat.name}`}
-                  className="block bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {categories.map((cat, index) => (
+                <motion.div
+                  key={cat.name}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05, duration: 0.4 }}
+                  whileHover={{ y: -5 }}
                 >
-                  <div
-                    className={`w-14 h-14 ${cat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-3`}
+                  <Link
+                    to={`/services?category=${cat.name}`}
+                    className="block bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
                   >
-                    <cat.icon className={`w-7 h-7 ${cat.textColor}`} />
-                  </div>
-                  <h3 className="font-semibold text-gray-800 text-sm">
-                    {cat.name}
-                  </h3>
-                </Link>
-              </motion.div>
-            ))}
+                    <div
+                      className={`w-14 h-14 ${cat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-3`}
+                    >
+                      <cat.icon className={`w-7 h-7 ${cat.textColor}`} />
+                    </div>
+                    <h3 className="font-semibold text-gray-800 text-sm">
+                      {cat.name}
+                    </h3>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ===== AI Recommendations Section (Hanya untuk Client) ===== */}
       {user?.role === "client" && (
