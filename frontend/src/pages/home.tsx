@@ -372,11 +372,11 @@ export default function Home() {
                     Provider Dashboard
                   </p>
                   <h2 className="text-white text-2xl md:text-3xl font-bold">
-                    Welcome back, {firstName}! 👋
+                    What's Up, {firstName}! 👋
                   </h2>
                   <p className="text-purple-100 text-sm md:text-base mt-1.5 max-w-xl">
                     Manage your services, check incoming orders, and grow your
-                    business.
+                    business!
                   </p>
                 </div>
 
