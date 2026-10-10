@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "../axiosConfig";
 import CustomerServiceToast from "./customerService";
 import {
@@ -17,6 +17,8 @@ import {
   User,
   LogOut,
   Headphones,
+  Menu,
+  X,
 } from "lucide-react";
 
 type User = {
@@ -85,6 +87,7 @@ export default function Home() {
   const [loadingRecs, setLoadingRecs] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [csOpen, setCsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const firstName = user?.name?.split(" ")[0] || "User";
 
@@ -118,6 +121,12 @@ export default function Home() {
       fetchRecommendations();
     }
   }, [user]);
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
 
   const handleLogOut = async () => {
     try {
@@ -253,17 +262,154 @@ export default function Home() {
               <Headphones className="w-5 h-5" />
             </button>
             <button
-              onClick={handleLogOut}
-              className="bg-red-50 text-red-600 p-2 rounded-lg"
+              onClick={() => setMobileOpen(true)}
+              className="bg-white/10 text-white p-2 rounded-lg"
+              aria-label="Open menu"
             >
-              <LogOut className="w-5 h-5" />
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
       </motion.nav>
+      {/* ==================== MOBILE DRAWER ==================== */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[82%] max-w-sm bg-gray-900 z-[70] md:hidden shadow-2xl flex flex-col"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <Wrench className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                    JasaGo
+                  </span>
+                </div>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition"
+                  aria-label="Close menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* User Info */}
+              {user && (
+                <div className="px-5 py-4 border-b border-gray-800">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    Signed in as
+                  </p>
+                  <p className="text-white font-semibold mt-1 truncate">
+                    {user.name}
+                  </p>
+                  <span className="inline-block mt-1.5 text-[10px] uppercase tracking-wide font-medium bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
+                    {user.role}
+                  </span>
+                </div>
+              )}
+
+              {/* Nav Links */}
+              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+                <MobileNavItem
+                  to="/home"
+                  label="Home"
+                  onClick={() => setMobileOpen(false)}
+                />
+
+                {user?.role === "client" && (
+                  <>
+                    <MobileNavItem
+                      to="/services"
+                      label="Services"
+                      onClick={() => setMobileOpen(false)}
+                    />
+                    <MobileNavItem
+                      to="/my-orders"
+                      label="My Orders"
+                      onClick={() => setMobileOpen(false)}
+                    />
+                  </>
+                )}
+
+                {user?.role === "provider" && (
+                  <>
+                    <MobileNavItem
+                      to="/my-services"
+                      label="My Services"
+                      onClick={() => setMobileOpen(false)}
+                    />
+                    <MobileNavItem
+                      to="/incoming-orders"
+                      label="Orders"
+                      onClick={() => setMobileOpen(false)}
+                    />
+                    <MobileNavItem
+                      to="/providers-review"
+                      label="Reviews"
+                      onClick={() => setMobileOpen(false)}
+                    />
+                  </>
+                )}
+
+                <MobileNavItem
+                  to="/profile"
+                  label="Profile"
+                  onClick={() => setMobileOpen(false)}
+                />
+                <MobileNavItem
+                  to="/about-us"
+                  label="About Us"
+                  onClick={() => setMobileOpen(false)}
+                />
+
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setCsOpen(true);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition text-left"
+                >
+                  <Headphones className="w-4 h-4" />
+                  <span className="font-medium">Customer Service</span>
+                </button>
+              </nav>
+
+              {/* Logout */}
+              <div className="p-4 border-t border-gray-800">
+                <button
+                  onClick={handleLogOut}
+                  className="w-full flex items-center justify-center gap-2 bg-red-500/15 text-red-400 hover:bg-red-500/25 py-3 rounded-xl font-medium transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section Premium */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-purple-600 to-indigo-300 text-white py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-purple-600 to-indigo-300 text-white py-12 sm:py-16 md:py-20">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
@@ -295,7 +441,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-4">
               Welcome back,{" "}
               <span className="bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
                 {firstName} !
@@ -329,7 +475,7 @@ export default function Home() {
       {/* Stats Section */}
       <section className="py-12 bg-gradient-to-r from-blue-50 to-purple-200 ">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -339,9 +485,9 @@ export default function Home() {
                 className="text-center"
               >
                 <div className="flex justify-center mb-2">
-                  <stat.icon className="w-8 h-8 text-purple-600" />
+                  <stat.icon className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
                 </div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-800">
+                <div className="text-xl md:text-3xl font-bold text-gray-800">
                   {stat.value}
                 </div>
                 <div className="text-sm text-gray-500">{stat.label}</div>
@@ -526,15 +672,15 @@ export default function Home() {
 
       {/* Categories Section untuk User saja */}
       {user?.role !== "provider" && (
-        <section className="py-16">
+        <section className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-8 md:mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-3">
                 Popular Categories
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto">
@@ -542,7 +688,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
               {categories.map((cat, index) => (
                 <motion.div
                   key={cat.name}
@@ -553,14 +699,16 @@ export default function Home() {
                 >
                   <Link
                     to={`/services?category=${cat.name}`}
-                    className="block bg-white rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
+                    className="block bg-white rounded-2xl p-4 md:p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
                   >
                     <div
-                      className={`w-14 h-14 ${cat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-3`}
+                      className={`w-12 h-12 md:w-14 md:h-14 ${cat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-3`}
                     >
-                      <cat.icon className={`w-7 h-7 ${cat.textColor}`} />
+                      <cat.icon
+                        className={`w-6 h-6 md:w-7 md:h-7 ${cat.textColor}`}
+                      />
                     </div>
-                    <h3 className="font-semibold text-gray-800 text-sm">
+                    <h3 className="font-semibold text-gray-800 text-xs md:text-sm">
                       {cat.name}
                     </h3>
                   </Link>
@@ -688,5 +836,25 @@ export default function Home() {
       {/* ===== Customer Service Toast ===== */}
       <CustomerServiceToast isOpen={csOpen} onClose={() => setCsOpen(false)} />
     </div>
+  );
+}
+
+function MobileNavItem({
+  to,
+  label,
+  onClick,
+}: {
+  to: string;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 hover:text-white transition text-left"
+    >
+      <span className="font-medium">{label}</span>
+    </Link>
   );
 }
