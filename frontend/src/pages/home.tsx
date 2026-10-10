@@ -350,8 +350,181 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* ==================== PROVIDER QUICK ACTIONS ==================== */}
+      {user?.role === "provider" && (
+        <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4">
+            {/* Greeting banner */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-3xl p-6 md:p-10 mb-8 md:mb-10 shadow-xl"
+            >
+              {/* Decorative circles */}
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
 
-      {/* Categories Section */}
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <p className="text-purple-200 text-xs md:text-sm font-medium uppercase tracking-wide mb-1">
+                    Provider Dashboard
+                  </p>
+                  <h2 className="text-white text-2xl md:text-3xl font-bold">
+                    Welcome back, {firstName}! 👋
+                  </h2>
+                  <p className="text-purple-100 text-sm md:text-base mt-1.5 max-w-xl">
+                    Manage your services, check incoming orders, and grow your
+                    business.
+                  </p>
+                </div>
+
+                <Link
+                  to="/create-service"
+                  className="inline-flex items-center gap-2 bg-white text-purple-700 px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm md:text-base whitespace-nowrap self-start md:self-auto"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Add New Service
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05, duration: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  to="/my-services"
+                  className="group block bg-white rounded-2xl p-5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200 h-full"
+                >
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <Wrench className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base md:text-lg mb-1">
+                    My Services
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-3">
+                    View, edit, or remove your listed services.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-purple-600 text-sm font-medium group-hover:gap-2 transition-all">
+                    Manage <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  to="/incoming-orders"
+                  className="group block bg-white rounded-2xl p-5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-full"
+                >
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <Truck className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base md:text-lg mb-1">
+                    Incoming Orders
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-3">
+                    Accept, complete, and track your orders.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium group-hover:gap-2 transition-all">
+                    View orders <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  to="/providers-review"
+                  className="group block bg-white rounded-2xl p-5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-yellow-200 h-full"
+                >
+                  <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <Star className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base md:text-lg mb-1">
+                    My Reviews
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-3">
+                    See what clients say about your services.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-yellow-600 text-sm font-medium group-hover:gap-2 transition-all">
+                    Check reviews <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Tips Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-3xl p-6 md:p-8 border border-purple-100"
+            >
+              <div className="flex items-start gap-3 mb-5">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-lg md:text-xl">
+                    Tips to Boost Your Business
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    Small things that make a big difference
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/70 backdrop-blur rounded-xl p-4 border border-white">
+                  <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-1.5">
+                    💡 Tip 1
+                  </p>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    <b>Respond quickly.</b> Providers who reply within 1 hour
+                    get 2× more orders.
+                  </p>
+                </div>
+                <div className="bg-white/70 backdrop-blur rounded-xl p-4 border border-white">
+                  <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-1.5">
+                    💰 Tip 2
+                  </p>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    <b>Use price suggestions.</b> Our AI helps you price
+                    services competitively.
+                  </p>
+                </div>
+                <div className="bg-white/70 backdrop-blur rounded-xl p-4 border border-white">
+                  <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-1.5">
+                    ⭐ Tip 3
+                  </p>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    <b>Keep clients happy.</b> 5-star reviews bring more clients
+                    to your profile.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Categories Section untuk User saja */}
       {user?.role !== "provider" && (
         <section className="py-16">
           <div className="container mx-auto px-4">
