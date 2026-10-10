@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../axiosConfig";
@@ -88,6 +88,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [csOpen, setCsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const csButtonRef = useRef<HTMLButtonElement>(null);
 
   const firstName = user?.name?.split(" ")[0] || "User";
 
@@ -255,6 +256,7 @@ export default function Home() {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
             <button
+              ref={csButtonRef}
               onClick={() => setCsOpen(true)}
               className="bg-white/10 text-white p-2 rounded-lg"
               aria-label="Customer Service"
@@ -834,7 +836,11 @@ export default function Home() {
       </footer>
 
       {/* ===== Customer Service Toast ===== */}
-      <CustomerServiceToast isOpen={csOpen} onClose={() => setCsOpen(false)} />
+      <CustomerServiceToast
+        isOpen={csOpen}
+        onClose={() => setCsOpen(false)}
+        anchorRef={csButtonRef}
+      />
     </div>
   );
 }
