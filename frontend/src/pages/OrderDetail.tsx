@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../axiosConfig";
+import Navbar from "./Navbar";
 import {
   Calendar,
   User,
@@ -171,185 +172,188 @@ export default function OrderDetail() {
   const status = STATUS[order.status];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-indigo-200 to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Back button */}
-        {isClient && (
-          <button
-            onClick={() => navigate("/my-orders")}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition mb-6"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Orders
-          </button>
-        )}
-        {isProvider && (
-          <button
-            onClick={() => navigate("/incoming-orders")}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition mb-6"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Order List
-          </button>
-        )}
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-indigo-200 to-blue-100 ">
+      <Navbar />
+      <div className="py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Back button */}
+          {isClient && (
+            <button
+              onClick={() => navigate("/my-orders")}
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition mb-6"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Orders
+            </button>
+          )}
+          {isProvider && (
+            <button
+              onClick={() => navigate("/incoming-orders")}
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition mb-6"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Order List
+            </button>
+          )}
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Main Card */}
-          <div className="md:col-span-2 bg-white rounded-2xl shadow-lg p-6 space-y-6 border border-gray-100">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-800">
-                Order #{order.id}
-              </h1>
-              <span
-                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${status.class}`}
-              >
-                {status.icon} {status.text}
-              </span>
-            </div>
-
-            <div className="space-y-3 text-gray-700">
-              <div className="flex items-center gap-3">
-                <ShoppingBag className="w-5 h-5 text-purple-500" />
-                <span className="font-medium">{order.service_title}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <DollarSign className="w-5 h-5 text-purple-500" />
-                <span className="font-bold text-purple-700">
-                  Rp {order.price.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Calendar className="w-5 h-5 text-purple-500" />
-                <span>{order.requested_date}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-purple-500" />
-                <span className="text-sm text-gray-500">
-                  Ordered on {new Date(order.created_at).toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-100 pt-4 space-y-2">
-              <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-purple-500" />
-                <span>
-                  <span className="font-medium">Client:</span>{" "}
-                  {order.client_name || `User #${order.client_id}`}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-green-400" />
-                <span>
-                  <span className="font-medium">Provider:</span>{" "}
-                  {order.provider_name || `User #${order.provider_id}`}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-black" />
-                <span>
-                  <span className="font-medium">Address:</span>{" "}
-                  {order.client_address || "Not provided"}
-                </span>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-100 pt-4">
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-700">
-                  Payment Status:
-                </span>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Main Card */}
+            <div className="md:col-span-2 bg-white rounded-2xl shadow-lg p-6 space-y-6 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold text-gray-800">
+                  Order #{order.id}
+                </h1>
                 <span
-                  className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    order.payment_status === "paid"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}
+                  className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${status.class}`}
                 >
-                  {order.payment_status === "paid" ? "✅ Paid" : "⏳ Unpaid"}
+                  {status.icon} {status.text}
                 </span>
               </div>
-            </div>
-          </div>
 
-          {/* Actions Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 h-fit space-y-4 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-purple-500" />
-              Actions
-            </h3>
-
-            {isProvider && order.status === "pending" && (
-              <div className="space-y-2">
-                <button
-                  onClick={() => updateStatus("accepted")}
-                  disabled={updating}
-                  className="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  <CheckCircle className="w-4 h-4" /> Accept Order
-                </button>
-                <button
-                  onClick={() => updateStatus("cancelled")}
-                  disabled={updating}
-                  className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  <XCircle className="w-4 h-4" /> Reject Order
-                </button>
+              <div className="space-y-3 text-gray-700">
+                <div className="flex items-center gap-3">
+                  <ShoppingBag className="w-5 h-5 text-purple-500" />
+                  <span className="font-medium">{order.service_title}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <DollarSign className="w-5 h-5 text-purple-500" />
+                  <span className="font-bold text-purple-700">
+                    Rp {order.price.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-purple-500" />
+                  <span>{order.requested_date}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-purple-500" />
+                  <span className="text-sm text-gray-500">
+                    Ordered on {new Date(order.created_at).toLocaleString()}
+                  </span>
+                </div>
               </div>
-            )}
 
-            {isProvider && order.status === "accepted" && (
-              <button
-                onClick={() => updateStatus("completed")}
-                disabled={updating}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                <CheckCircle className="w-4 h-4" /> Complete Order
-              </button>
-            )}
+              <div className="border-t border-gray-100 pt-4 space-y-2">
+                <div className="flex items-center gap-3">
+                  <User className="w-5 h-5 text-purple-500" />
+                  <span>
+                    <span className="font-medium">Client:</span>{" "}
+                    {order.client_name || `User #${order.client_id}`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <User className="w-5 h-5 text-green-400" />
+                  <span>
+                    <span className="font-medium">Provider:</span>{" "}
+                    {order.provider_name || `User #${order.provider_id}`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-5 h-5 text-black" />
+                  <span>
+                    <span className="font-medium">Address:</span>{" "}
+                    {order.client_address || "Not provided"}
+                  </span>
+                </div>
+              </div>
 
-            {isClient && order.status === "pending" && (
-              <button
-                onClick={cancelOrder}
-                disabled={updating}
-                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                <XCircle className="w-4 h-4" /> Cancel Order
-              </button>
-            )}
+              <div className="border-t border-gray-100 pt-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-700">
+                    Payment Status:
+                  </span>
+                  <span
+                    className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      order.payment_status === "paid"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {order.payment_status === "paid" ? "✅ Paid" : "⏳ Unpaid"}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-            {isClient &&
-              order.status === "completed" &&
-              order.payment_status !== "paid" && (
+            {/* Actions Card */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 h-fit space-y-4 border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-purple-500" />
+                Actions
+              </h3>
+
+              {isProvider && order.status === "pending" && (
+                <div className="space-y-2">
+                  <button
+                    onClick={() => updateStatus("accepted")}
+                    disabled={updating}
+                    className="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <CheckCircle className="w-4 h-4" /> Accept Order
+                  </button>
+                  <button
+                    onClick={() => updateStatus("cancelled")}
+                    disabled={updating}
+                    className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <XCircle className="w-4 h-4" /> Reject Order
+                  </button>
+                </div>
+              )}
+
+              {isProvider && order.status === "accepted" && (
                 <button
-                  onClick={() => navigate(`/payment/${order.id}`)}
-                  className="w-full py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2"
+                  onClick={() => updateStatus("completed")}
+                  disabled={updating}
+                  className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  💳 Make Payment
+                  <CheckCircle className="w-4 h-4" /> Complete Order
                 </button>
               )}
 
-            {isClient && order.payment_status === "paid" && (
-              <button
-                onClick={() => navigate(`/create-review/${order.id}`)}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2"
-              >
-                ⭐ Write Review
-              </button>
-            )}
+              {isClient && order.status === "pending" && (
+                <button
+                  onClick={cancelOrder}
+                  disabled={updating}
+                  className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <XCircle className="w-4 h-4" /> Cancel Order
+                </button>
+              )}
 
-            {!isProvider && !isClient && (
-              <p className="text-sm text-gray-500 text-center">
-                You are not authorized to perform actions.
-              </p>
-            )}
+              {isClient &&
+                order.status === "completed" &&
+                order.payment_status !== "paid" && (
+                  <button
+                    onClick={() => navigate(`/payment/${order.id}`)}
+                    className="w-full py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2"
+                  >
+                    💳 Make Payment
+                  </button>
+                )}
 
-            {updating && (
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                Updating...
-              </div>
-            )}
+              {isClient && order.payment_status === "paid" && (
+                <button
+                  onClick={() => navigate(`/create-review/${order.id}`)}
+                  className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition flex items-center justify-center gap-2"
+                >
+                  ⭐ Write Review
+                </button>
+              )}
+
+              {!isProvider && !isClient && (
+                <p className="text-sm text-gray-500 text-center">
+                  You are not authorized to perform actions.
+                </p>
+              )}
+
+              {updating && (
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  Updating...
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

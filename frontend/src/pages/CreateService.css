@@ -11,6 +11,15 @@
   position: relative;
   overflow: hidden;
 }
+.create-service-content {
+  min-height: calc(100vh - 64px); /* kurangi tinggi navbar (±64px) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
 
 /* Animated background bubbles */
 .create-service-container::before {
