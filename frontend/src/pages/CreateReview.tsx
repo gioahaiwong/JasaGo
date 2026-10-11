@@ -124,96 +124,100 @@ export default function CreateReview() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-indigo-100 to-blue-200 py-8 px-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-indigo-100 to-blue-200">
       <Navbar />
-      <div className="max-w-lg w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/30">
-        {/* Header with back button */}
-        <div className="flex items-center gap-3 mb-6">
-          <button
-            onClick={() => navigate("/my-orders")}
-            className="p-2 -ml-2 text-gray-600 hover:text-purple-600 transition rounded-full hover:bg-purple-50"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-2xl font-bold text-gray-800">Write a Review</h1>
-        </div>
-
-        {/* Order Info */}
-        <div className="bg-purple-50/70 rounded-xl p-4 mb-6 space-y-1 text-sm border border-purple-100/50">
-          <p className="text-gray-700">
-            <span className="font-medium">Service:</span> {order.service_title}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-medium">Provider:</span> {order.provider_name}
-          </p>
-        </div>
-
-        {/* Rating */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Rating *
-          </label>
-          <div className="flex gap-2">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                onClick={() => setRating(star)}
-                className={`text-4xl transition-all duration-200 ${
-                  star <= rating
-                    ? "text-yellow-400 scale-110"
-                    : "text-gray-300 hover:text-yellow-200 hover:scale-105"
-                }`}
-              >
-                ★
-              </button>
-            ))}
+      <div className="py-8 px-4 flex items-center justify-center">
+        <div className="max-w-lg w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/30">
+          {/* Header with back button */}
+          <div className="flex items-center gap-3 mb-6">
+            <button
+              onClick={() => navigate("/my-orders")}
+              className="p-2 -ml-2 text-gray-600 hover:text-purple-600 transition rounded-full hover:bg-purple-50"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <h1 className="text-2xl font-bold text-gray-800">Write a Review</h1>
           </div>
-          {rating === 0 && (
-            <p className="text-xs text-gray-400 mt-1">Tap a star to rate</p>
-          )}
-        </div>
 
-        {/* Comment */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Review Comment *
-          </label>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Share your experience with this service..."
-            rows={4}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition bg-white/80 resize-none"
-          />
-        </div>
+          {/* Order Info */}
+          <div className="bg-purple-50/70 rounded-xl p-4 mb-6 space-y-1 text-sm border border-purple-100/50">
+            <p className="text-gray-700">
+              <span className="font-medium">Service:</span>{" "}
+              {order.service_title}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-medium">Provider:</span>{" "}
+              {order.provider_name}
+            </p>
+          </div>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={handleSubmit}
-            disabled={submit}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition disabled:opacity-50 shadow-md"
-          >
-            {submit ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              <>
-                <Star className="w-5 h-5 fill-current" />
-                Submit Review
-              </>
+          {/* Rating */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Rating *
+            </label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  className={`text-4xl transition-all duration-200 ${
+                    star <= rating
+                      ? "text-yellow-400 scale-110"
+                      : "text-gray-300 hover:text-yellow-200 hover:scale-105"
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+            {rating === 0 && (
+              <p className="text-xs text-gray-400 mt-1">Tap a star to rate</p>
             )}
-          </button>
-          <button
-            onClick={() => navigate("/my-orders")}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl transition"
-            disabled={submit}
-          >
-            Cancel
-          </button>
+          </div>
+
+          {/* Comment */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Review Comment *
+            </label>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Share your experience with this service..."
+              rows={4}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition bg-white/80 resize-none"
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={handleSubmit}
+              disabled={submit}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition disabled:opacity-50 shadow-md"
+            >
+              {submit ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <Star className="w-5 h-5 fill-current" />
+                  Submit Review
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => navigate("/my-orders")}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl transition"
+              disabled={submit}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
