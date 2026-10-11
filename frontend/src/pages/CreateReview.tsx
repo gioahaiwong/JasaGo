@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../axiosConfig";
 import { ArrowLeft, Star, Loader2 } from "lucide-react";
+import Navbar from "./Navbar";
 
 type Order = {
   id: number;
@@ -124,6 +125,7 @@ export default function CreateReview() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-indigo-100 to-blue-200 py-8 px-4 flex items-center justify-center">
+      <Navbar />
       <div className="max-w-lg w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/30">
         {/* Header with back button */}
         <div className="flex items-center gap-3 mb-6">
