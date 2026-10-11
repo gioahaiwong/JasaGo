@@ -31,6 +31,7 @@ Thumbs.db
 backend/Uploads/
 backend/public/uploads/
 backend/backFill.js
+frontend/.env
 
 # Test files
 test-*.js
